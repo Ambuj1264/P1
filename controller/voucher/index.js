@@ -167,12 +167,17 @@ const voucherController = {
       data.map((item) => {
         const codeLength = [item.code].length;
         const filterCode = new Set([item.code]);
-        if ((codeLength != filterCode.size) && item.codeType =="unique") {
+        if (codeLength != filterCode.size && item.codeType == "unique") {
           brandName.push(item.brandName);
         }
       });
       if (brandName.length) {
-        return errorResponse(res, false, `${brandName.join(" ")} have dublicate entry`,null);
+        return errorResponse(
+          res,
+          false,
+          `${brandName.join(" ")} have dublicate entry`,
+          null
+        );
       }
       const response = await Voucher.insertMany(
         data.map((item) => ({
@@ -182,6 +187,7 @@ const voucherController = {
           count: item.count,
           price: item.price,
           reedemedItem: item.reedemedItem,
+          codeType: item.codeType,
         }))
       );
 

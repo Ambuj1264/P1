@@ -61,14 +61,12 @@ const UserController = {
       const token = jwt.sign({ id: findUser._id }, process.env.JWT_SEC, {
         expiresIn: "30d",
       });
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: USER_LOGIN_SUCCESS,
-          data: findUser,
-          token: token,
-        });
+      return res.status(200).json({
+        success: true,
+        message: USER_LOGIN_SUCCESS,
+        data: findUser,
+        token: token,
+      });
     } catch (error) {
       return errorResponse(res, false, SOME_WENT_WRONG, error.message);
     }

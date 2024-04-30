@@ -25,7 +25,7 @@ const voucherSchema = mongoose.Schema(
     },
     count: {
       type: Number,
-      default: 1000,
+      default: 10000000,
       min: 0,
     },
     price: {

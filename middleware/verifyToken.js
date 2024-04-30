@@ -8,9 +8,7 @@ const verifyToken = (req, res, next) => {
       .status(401)
       .json({ success: false, message: TOKEN_NOT_FOUND, data: null });
   }
-
   const token = authToken.split(" ")[1];
-
   jwt.verify(token, process.env.JWT_SEC, (err, user) => {
     if (err) {
       return res
