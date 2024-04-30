@@ -21,10 +21,33 @@ const perchasesController = {
         return errorResponse(res, false, USERID_VOCHERID_AMOUNT_REQUIRED, null);
       }
 
+      const findVoucher = await Voucher.findOne({
+        _id: voucherId,
+        isDeleted: false,
+      });
+
+      if (!findVoucher) {
+        return errorResponse(res, false, "Voucher Id is invaild", null);
+      }
+      if (findVoucher.count <= 0 || findVoucher.expiryDate < new Date()) {
+        return errorResponse(res, false, "Voucher is Expired", null);
+      }
+      const findUser = await User.findOne({
+        _id: userId,
+        isDeleted: false,
+      });
+
+      if (!findUser) {
+        return errorResponse(res, false, "User Id is not valid", null);
+      }
+
+      if (findUser.balance < findVoucher.price) {
+        return errorResponse(res, false, "Insufficient balance", null);
+      }
       const perchases = await PerchasesModel.create({
         userId,
         voucherId,
-        amount,
+        amount: findVoucher.price,
       });
 
       if (!perchases) {

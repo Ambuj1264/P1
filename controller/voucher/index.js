@@ -63,7 +63,6 @@ const voucherController = {
       errorResponse(res, false, error.message, null);
     }
   },
-
   getVoucher: async (req, res) => {
     try {
       const { id } = req.body;
@@ -104,7 +103,6 @@ const voucherController = {
       errorResponse(res, false, error.message, null);
     }
   },
-
   updateVoucher: async (req, res) => {
     try {
       const {
@@ -165,7 +163,17 @@ const voucherController = {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const data = xlsx.utils.sheet_to_json(sheet);
-
+      const brandName = [];
+      data.map((item) => {
+        const codeLength = [item.code].length;
+        const filterCode = new Set([item.code]);
+        if ((codeLength != filterCode.size) && item.codeType =="unique") {
+          brandName.push(item.brandName);
+        }
+      });
+      if (brandName.length) {
+        return errorResponse(res, false, `${brandName.join(" ")} have dublicate entry`,null);
+      }
       const response = await Voucher.insertMany(
         data.map((item) => ({
           brandName: item.brandName,

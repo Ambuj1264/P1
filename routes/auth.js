@@ -16,8 +16,8 @@ router.post(
   upload.single('file'),
   voucherController.createVoucherByExcelSheet
 );
-//perchases route
 
+//perchases route
 router.post("/perchases/create", perchasesController.createPerchases);
 router.post("/perchases/getPerchases", perchasesController.getPerchases);
 router.post("/perchases/getAllPerchases", perchasesController.getAllPerchases);
