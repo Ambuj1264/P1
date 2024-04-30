@@ -1,30 +1,33 @@
-// get voucher test case
+// update perchases test case
 
 const request = require("supertest");
 const app = require("../../index");
 const {
-  VOUCHER_FETCHED,
+  ID_NOT_FOUND,
+  PERCHASES_NOT_UPDATED,
+  PERCHASES_UPDATED,
   BEARER_TOKEN,
   TOKEN_NOT_FOUND,
-  ID_NOT_FOUND,
 } = require("../../utility/constant");
 
-describe("Get Voucher API", () => {
-  test("Get voucher", async () => {
+describe("Update Perchases API", () => {
+  test("Update perchases", async () => {
     const bearerToken = BEARER_TOKEN;
     const res = await request(app)
-      .post(`/auth/voucher/getVoucher`)
+      .post(`/auth/perchases/update`)
       .set("Authorization", `Bearer ${bearerToken}`)
       .send({
-        id: "662fdabfbb984af797188e9c",
+        id: "66309410bc17b016c6a2cf9d",
+        amount: 100,
       });
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe(VOUCHER_FETCHED);
+    expect(res.body.message).toBe(PERCHASES_UPDATED);
   });
 
   test("Without token", async () => {
-    const res = await request(app).post(`/auth/voucher/getVoucher`).send({
+    const res = await request(app).post(`/auth/perchases/update`).send({
       id: "662fdabfbb984af797188e9c",
+      amount: 100,
     });
     expect(res.status).toBe(401);
     expect(res.body.message).toBe(TOKEN_NOT_FOUND);
@@ -33,24 +36,13 @@ describe("Get Voucher API", () => {
   test("Empty fields", async () => {
     const bearerToken = BEARER_TOKEN;
     const res = await request(app)
-      .post(`/auth/voucher/getVoucher`)
+      .post(`/auth/perchases/update`)
       .set("Authorization", `Bearer ${bearerToken}`)
       .send({
         id: "",
+        amount: 100,
       });
     expect(res.status).toBe(400);
     expect(res.body.message).toBe(ID_NOT_FOUND);
-  });
-
-  test("GET ALL VOUCHER", async () => {
-    const bearerToken = BEARER_TOKEN;
-    const res = await request(app)
-      .post(`/auth/voucher/getAllVoucher`)
-      .set("Authorization", `Bearer ${bearerToken}`)
-      .send({
-        isDeleted: false,
-      });
-    expect(res.status).toBe(200);
-    expect(res.body.message).toBe(VOUCHER_FETCHED);
   });
 });
