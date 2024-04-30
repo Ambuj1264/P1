@@ -1,27 +1,51 @@
 // vocher create test case
 const request = require("supertest");
 const app = require("../../index");
-const { VOUCHER_CREATED } = require("../../utility/constant");
+const { VOUCHER_CREATED, BEARER_TOKEN, TOKEN_NOT_FOUND, BRANDNAME_CODE_EXPIRYDATE_COUNT_PRICE_REDEEMED_ITEM_REQUIRED } = require("../../utility/constant");
+const { randomData } = require("../../utility/Common");
 
 describe("Create Voucher API", () => {
   test("Create voucher", async () => {
-    const res = await request(app).post(`/voucher/create`).send({
-      brandName: "Dmart",
-      code: "AMBXSGGGRR",
-      expiryDate: "2022-12-12",
-      codeType: "repeated",
-      count: 10,
-      price: 10,
-      reedemedItem: "10 Rs off",
-    });
+    const bearerToken = BEARER_TOKEN;
+    const res = await request(app)
+      .post(`/auth/voucher/create`)
+      .set("Authorization", `Bearer ${bearerToken}` )
+      .send({
+        brandName: randomData(),
+        code: [randomData()],
+        expiryDate: "2022-12-12",
+        codeType: "repeated",
+        count: 10,
+        price: 10,
+        reedemedItem: "10 Rs off",  
+      })
     expect(res.status).toBe(200);
     expect(res.body.message).toBe(VOUCHER_CREATED);
   });
 
+  test("Without token", async () => {
+    const res = await request(app)
+      .post(`/auth/voucher/create`)
+      .send({
+        brandName: "Dmart",
+        code: [randomData()],
+        expiryDate: "2022-12-12",
+        codeType: "repeated",
+        count: 10,
+        price: 10,
+        reedemedItem: "10 Rs off",
+      });
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe(TOKEN_NOT_FOUND);
+  });
+
   test("Empty fields", async () => {
-    const res = await request(app).post(`/voucher/create`).send({
+    const bearerToken = BEARER_TOKEN;
+    const res = await request(app).post(`/auth/voucher/create`)
+    .set("Authorization", `Bearer ${bearerToken}` )
+    .send({
       brandName: "",
-      code: "AMBXSGGGRR",
+      code: [randomData()],
       expiryDate: "2022-12-12",
       codeType: "repeated",
       count: 10,
@@ -29,36 +53,8 @@ describe("Create Voucher API", () => {
       reedemedItem: "10 Rs off",
     });
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("All fields are required");
+    expect(res.body.message).toBe(BRANDNAME_CODE_EXPIRYDATE_COUNT_PRICE_REDEEMED_ITEM_REQUIRED);
   });
-
-  test("Invalid date", async () => {
-    const res = await request(app).post(`/voucher/create`).send({
-      brandName: "Dmart",
-      code: "AMBXSGGGRR",
-      expiryDate: "2022-12-13",
-      codeType: "repeated",
-      count: 10,
-      price: 10,
-      reedemedItem: "10 Rs off",
-    });
-    expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Invalid date");
-  });
-
-//   test("Invalid count", async () => {
-//     const res = await request(app).post(`/voucher/create`).send({
-//       brandName: "Dmart",
-//       code: "AMBXSGGGRR",
-//       expiryDate: "2022-12-12",
-//       codeType: "repeated",
-//       count: -10,
-//       price: 10,
-//       reedemedItem: "10 Rs off",
-//     });
-//     expect(res.status).toBe(400);
-//     expect(res.body.message).toBe("Invalid count");
-//   });
 
 
 

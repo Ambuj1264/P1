@@ -33,6 +33,7 @@ const VOUCHER_CREATED_BY_EXCEL_SHEET =
   "Voucher created by excel sheet successfully";
 const TOKEN_NOT_FOUND = "Token not found";
 const UNAUTHORIZED = "Unauthorized";
+const BEARER_TOKEN= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmY2ZTEzMTRhMzYzOGFlYmYzNjMyZSIsImlhdCI6MTcxNDM5MzA5MywiZXhwIjoxNzE0NDc5NDkzfQ.QgW1tEyKFAdm5egH0Y4JkylkAk4M42WIRND_BJ-z7fI";
 module.exports = {
   USER_NOT_FOUND,
   USER_ALREADY_EXISTS,
@@ -67,4 +68,5 @@ module.exports = {
   VOUCHER_CREATED_BY_EXCEL_SHEET,
   TOKEN_NOT_FOUND,
   UNAUTHORIZED,
+  BEARER_TOKEN
 };

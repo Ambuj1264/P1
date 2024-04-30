@@ -1,9 +1,9 @@
 //create user test case
 
 const request = require("supertest");
-const app = require("../index");
-const { ALL_FIELDS_REQUIRED } = require("../utility/constant");
-const { randomData } = require("../utility/Common");
+const app = require("../../index");
+const { ALL_FIELDS_REQUIRED } = require("../../utility/constant");
+const { randomData } = require("../../utility/Common");
 
 describe("Create User API", () => {
   test("Create user", async () => {

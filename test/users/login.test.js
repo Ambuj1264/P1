@@ -1,10 +1,10 @@
 const request = require("supertest");
-const app = require("../index");
+const app = require("../../index");
 const {
   USER_LOGIN_SUCCESS,
   USER_NOT_FOUND,
   EMAIL_AND_PASSWORD_REQUIRED,
-} = require("../utility/constant");
+} = require("../../utility/constant");
 
 describe("Login API", () => {
   test("Valid login", async () => {

@@ -1,9 +1,9 @@
 //update user test case
 
 const request = require("supertest");
-const app = require("../index");
-const { ID_NOT_FOUND } = require("../utility/constant");
-const { randomData } = require("../utility/Common");
+const app = require("../../index");
+const { ID_NOT_FOUND } = require("../../utility/constant");
+const { randomData } = require("../../utility/Common");
 
 describe("Update User API", () => {
   test("Update user", async () => {
