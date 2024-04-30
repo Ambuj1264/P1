@@ -164,11 +164,14 @@ const voucherController = {
       const sheet = workbook.Sheets[sheetName];
       const data = xlsx.utils.sheet_to_json(sheet);
       const brandName = [];
+      const newCode = [];
       data.map((item) => {
-        const codeLength = [item.code].length;
-        const filterCode = new Set([item.code]);
+        const codeLength = item.code.split(" ").length;
+        const filterCode = new Set(item.code.split(" "));
         if (codeLength != filterCode.size && item.codeType == "unique") {
           brandName.push(item.brandName);
+        } else {
+          newCode.push(item.code.split(" "));
         }
       });
       if (brandName.length) {
@@ -182,7 +185,7 @@ const voucherController = {
       const response = await Voucher.insertMany(
         data.map((item) => ({
           brandName: item.brandName,
-          code: item.code,
+          code: item.code.split(" "),
           expiryDate: item.expiryDate,
           count: item.count,
           price: item.price,
